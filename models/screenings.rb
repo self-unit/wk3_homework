@@ -2,11 +2,11 @@ require_relative('../db/sql_runner.sql')
 
 class Screening
   attr_reader :id
-  attr_accessor :times, :film_id
+  attr_accessor :time, :film_id
 
   def initialize(options)
     @id = options['id'].to_i if options['id']
-    @times = options['times']
+    @time = options['times']
     @film_id = options['film_id'].to_i if options['film_id']
   end
 

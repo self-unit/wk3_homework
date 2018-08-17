@@ -2,7 +2,7 @@ require_relative('../db/sql_runner.sql')
 
 class Ticket
   attr_reader :id
-  attr_accessor :customer_id, :screening_id
+  attr_accessor :customer_id, :screening
 
   def initialize(options)
     @id = options['id'].to_i if options['id']
