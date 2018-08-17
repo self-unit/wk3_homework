@@ -1,8 +1,8 @@
-require_relative('../db/sql_runner.sql')
+require_relative('../db/sql_runner.rb')
 
 class Ticket
   attr_reader :id
-  attr_accessor :customer_id, :screening
+  attr_accessor :customer_id, :screening_id
 
   def initialize(options)
     @id = options['id'].to_i if options['id']
@@ -12,18 +12,18 @@ class Ticket
 
   def save()
     sql = "INSERT INTO tickets
-    (id, customer_id, screening_id)
+    (customer_id, screening_id)
     VALUES
-    ($1, $2, $3)
+    ($1, $2)
     RETURNING id"
-    values = [@id, @customer_id, @screening_id]
+    values = [@customer_id, @screening_id]
     ticket = SqlRunner.run(sql, values).first
     return @id = ticket['id'].to_i
   end
 
   def update()
     sql = "UPDATE tickets
-    SET (customer_id, screening_id, id) =
+    SET (customer_id, screening_id) =
     ($1, $2)
     WHERE id = $3"
     values = [@customer_id, @screening_id, @id]
@@ -38,14 +38,14 @@ class Ticket
   end
 
   def self.all()
-    sql = "SELECT * FROM ticket"
+    sql = "SELECT * FROM tickets"
     values = []
     returned_array = SqlRunner.run(sql, values)
     result = returned_array.map{|entry| Ticket.new(entry)}
     return result
   end
 
-  def self.delte_all()
+  def self.delete_all()
     sql = "DELETE FROM tickets"
     values = []
     SqlRunner.run(sql, values)

@@ -1,4 +1,4 @@
-require_relative('../db/sql_runner.sql')
+require_relative('../db/sql_runner.rb')
 
 class Film
   attr_reader :id
@@ -12,18 +12,18 @@ class Film
 
   def save()
     sql = "INSERT INTO films
-    (id, title, price)
+    (title, price)
     VALUES
-    ($1, $2, $3)
+    ($1, $2)
     RETURNING id"
-    values = [@id, @title, @price]
+    values = [@title, @price]
     film = SqlRunner.run(sql, values).first
     return @id = film['id'].to_i
   end
 
   def update()
     sql = "UPDATE films
-    SET (title, price, id) =
+    SET (title, price) =
     ($1, $2)
     WHERE id = $3"
     values = [@title, @price, @id]
@@ -45,7 +45,7 @@ class Film
     return result
   end
 
-  def self.delte_all()
+  def self.delete_all()
     sql = "DELETE FROM films"
     values = []
     SqlRunner.run(sql, values)
