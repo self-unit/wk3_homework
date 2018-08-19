@@ -59,8 +59,18 @@ class Film
 
   def popular_time()
     ticket_data = self.tickets
-    return ticket_data['screening_id'].sort
-    # return ticket_data.sort{|x,y| y <=> x}
+    time_id = ticket_data.map{|ticket| ticket.screening_id}
+    duplicate_count = Hash.new(0)
+    time_id.each do |screening_id|
+      duplicate_count[screening_id] += 1
+    end
+    sorted_duplicates = duplicate_count.sort_by {|key, value| value}
+    popular_id = sorted_duplicates.last[0]
+    sql = "SELECT * FROM screenings
+    WHERE screenings.id = $1"
+    values = [popular_id]
+    most_popular_time = SqlRunner.run(sql, values)
+    return most_popular_time.map{|time| Screening.new(time)}
   end
 
   def attendance()

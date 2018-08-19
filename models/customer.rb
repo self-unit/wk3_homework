@@ -28,8 +28,7 @@ class Customer
     WHERE tickets.customer_id = $1"
     values = [@id]
     screenings_data = SqlRunner.run(sql, values)
-    screenings = screenings_data.map{|screening| Screening.new(screening)}
-    return screenings.map{|screening| screening.showtime}
+    return screenings_data.map{|screening| Screening.new(screening)}
   end
 
   def films()

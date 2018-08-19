@@ -22,7 +22,7 @@ film1.save()
 film2 = Film.new('title' => 'Incredibles', 'price' => '10')
 film2.save()
 
-screening1 = Screening.new('showtime' => '10:00', 'capacity' => '100', 'film_id' => film1.id)
+screening1 = Screening.new('showtime' => '10:00', 'capacity' => '2', 'film_id' => film1.id)
 screening1.save()
 screening2 = Screening.new('showtime' => '14:00', 'capacity' => '50', 'film_id' => film1.id)
 screening2.save()

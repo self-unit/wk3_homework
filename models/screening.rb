@@ -39,6 +39,30 @@ class Screening
     return data_array.map{|film| Film.new(film)}
   end
 
+  def tickets()
+    sql = "SELECT * FROM tickets
+    WHERE tickets.screening_id = $1"
+    values = [@id]
+    data_array = SqlRunner.run(sql, values)
+    return data_array.map{|ticket| Ticket.new(ticket)}
+  end
+
+  def customers()
+    sql = "SELECT customers.* FROM customers
+    INNER JOIN tickets
+    ON tickets.customer_id = customers.id
+    WHERE tickets.screening_id = $1"
+    values = [@id]
+    customer_data = SqlRunner.run(sql, values)
+    return customer_data.map{|customer| Customer.new(customer)}
+  end
+
+  def update_capacity()
+    customer_count = self.customers.count
+    self.capacity -= customer_count
+    self.update
+  end
+
   def delete()
     sql = "DELETE FROM screenings
     WHERE id = $1"
