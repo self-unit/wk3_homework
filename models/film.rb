@@ -30,6 +30,12 @@ class Film
     SqlRunner.run(sql, values)
   end
 
+  def customers()
+  end
+
+  def attendance()
+  end
+
   def delete()
     sql = "DELETE FROM films
     WHERE id = $1"

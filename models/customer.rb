@@ -21,6 +21,12 @@ class Customer
     return @id = customer['id'].to_i
   end
 
+  def films()
+  end
+
+  def buy_ticket()
+  end
+
   def update()
     sql = "UPDATE customers
     SET (name, funds) =
