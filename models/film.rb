@@ -31,16 +31,27 @@ class Film
   end
 
   def customers()
+
   end
 
-  def attendance()
+  def tickets()
     sql = "SELECT tickets.* FROM tickets
     INNER JOIN screenings
     ON tickets.screening_id = screenings.id
     WHERE screenings.film_id = $1"
     values = [@id]
-    attendance_data = SqlRunner.run(sql, values)
-    ticket_data = attendance_data.map{|ticket| Ticket.new(ticket)}
+    ticket_data = SqlRunner.run(sql, values)
+    return ticket_data.map{|ticket| Ticket.new(ticket)}
+  end
+
+  def popular_time()
+    ticket_data = self.tickets
+    return ticket_data['screening_id'].sort
+    # return ticket_data.sort{|x,y| y <=> x}
+  end
+
+  def attendance()
+    ticket_data = self.tickets
     return ticket_data.count()
   end
 

@@ -39,9 +39,6 @@ class Screening
     return data_array.map{|film| Film.new(film)}
   end
 
-  def popular_time()
-  end
-
   def delete()
     sql = "DELETE FROM screenings
     WHERE id = $1"

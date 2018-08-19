@@ -32,28 +32,24 @@ class Customer
   end
 
   def films()
-    screenings = self.screenings()
-    film_ids = screenings.map{|showing| showing.film_id}
     sql = "SELECT films.* FROM films
     INNER JOIN screenings
     ON screenings.film_id = films.id
-    WHERE screenings.id = $!"
-    values = [film_ids]
-    screenings_data = SqlRunner.run(sql, values)
-    # film_ids = screenings.map{|screening| screening.film_id}
-    # films = film_ids.each do |film_id|
-    #   sql = "SELECT * FROM films
-    #   WHERE films.id = $1"
-    #   values = [film_id]
-    #   SqlRunner.run(sql, values)
-    # end
-    # return films
+    INNER JOIN tickets
+    ON tickets.screening_id = screenings.id
+    WHERE tickets.customer_id = $1"
+    values = [@id]
+    films_data = SqlRunner.run(sql, values)
+    return films_data.map{|film| Film.new(film)}
   end
 
   def tickets()
-  end
-
-  def buy_ticket()
+    sql = "SELECT * FROM tickets
+    WHERE tickets.customer_id = $1"
+    values = [@id]
+    ticket_array = SqlRunner.run(sql, values)
+    ticket_data = ticket_array.map{|ticket| Ticket.new(ticket)}
+    return ticket_data.count()
   end
 
   def update()
