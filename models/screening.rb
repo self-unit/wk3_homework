@@ -31,6 +31,14 @@ class Screening
     SqlRunner.run(sql, values)
   end
 
+  def films()
+    sql = "SELECT * FROM films
+    WHERE films.id = $1"
+    values = [@film_id]
+    data_array = SqlRunner.run(sql, values)
+    return data_array.map{|film| Film.new(film)}
+  end
+
   def popular_time()
   end
 
