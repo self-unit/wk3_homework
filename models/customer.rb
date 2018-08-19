@@ -28,7 +28,8 @@ class Customer
     WHERE tickets.customer_id = $1"
     values = [@id]
     screenings_data = SqlRunner.run(sql, values)
-    return screenings_data.map{|screening| Screening.new(screening)}
+    screenings = screenings_data.map{|screening| Screening.new(screening)}
+    return screenings.map{|screening| screening.showtime}
   end
 
   def films()
@@ -61,6 +62,14 @@ class Customer
     SqlRunner.run(sql, values)
   end
 
+  def buy_tickets()
+    film_array = self.films
+    prices = film_array.map{|film| film.price}
+    total = prices.sum
+    self.funds -= total
+    self.update
+  end
+
   def delete()
     sql = "DELETE FROM customers
     WHERE id = $1"
@@ -81,5 +90,6 @@ class Customer
     values = []
     SqlRunner.run(sql, values)
   end
+
 
 end

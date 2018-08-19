@@ -42,6 +42,11 @@ class Film
     return customer_data.map{|customer| Customer.new(customer)}
   end
 
+  def count_customers()
+    customer_data = self.customers
+    return customer_data.count
+  end
+
   def tickets()
     sql = "SELECT tickets.* FROM tickets
     INNER JOIN screenings
